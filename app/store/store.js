@@ -10,13 +10,12 @@ export const useAdminStore = create((set, get) => ({
 
   // Actions for Menu
   fetchMenu: () => {
-    // Simulate fetching menu items
     const fetchedMenu = [
       { id: uuidv4(), name: 'Grilled Chicken', price: 300, image: 'https://www.budgetbytes.com/wp-content/uploads/2024/06/Grilled-Chicken-Overhead.jpg', description: 'Juicy grilled chicken' },
       { id: uuidv4(), name: 'Veggie Delight', price: 200, image: 'https://s.lightorangebean.com/media/20240914161537/Ultimate-Veggie-Delight-Sandwich_-done.png', description: 'Fresh vegetable platter' },
     ];
     set({ menuItems: fetchedMenu });
-  },
+  }, 
 
   addMenuItem: (item) => {
     const newItem = { ...item, id: uuidv4() };

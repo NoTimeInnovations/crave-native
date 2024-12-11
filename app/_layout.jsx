@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 import 'react-native-get-random-values';
+import "../global.css"
 
 const RootLayout = () => {
   return (

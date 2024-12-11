@@ -28,7 +28,8 @@ const AdminDashboard = () => {
   const [offerData, setOfferData] = useState({
     menuItemId: '',
     newPrice: '',
-    validUntil: '',
+    validUntilHours: '0',
+    validUntilMinutes: '0',
   });
   const [editingItem, setEditingItem] = useState(null);
 
@@ -38,6 +39,10 @@ const AdminDashboard = () => {
   }, [fetchMenu, fetchOffers]);
 
   const handleAddOrEditMenu = () => {
+    if (formData.name || formData.price || formData.image === "") {
+      alert("Name, price and image feilds are required");
+      return;
+    }
     if (editingItem) {
       updateMenuItem(editingItem.id, formData);
     } else {
@@ -58,7 +63,29 @@ const AdminDashboard = () => {
     deleteMenuItem(id);
   };
 
+  const validateOfferData = () => {
+    if (!offerData.menuItemId || !offerData.newPrice || !offerData.validUntilHours || !offerData.validUntilMinutes) {
+      alert("All fields are required.");
+      return false;
+    }
+
+    const hours = parseInt(offerData.validUntilHours, 10);
+    const minutes = parseInt(offerData.validUntilMinutes, 10);
+
+    if (hours === 0 && minutes < 30) {
+      alert("Minimum valid time should be at least 30 minutes.");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleAddOffer = () => {
+    // validate offer data
+    if (!validateOfferData()) {
+      return;
+    }
+
     addOffer({
       menuItemId: offerData.menuItemId,
       newPrice: parseFloat(offerData.newPrice),
@@ -103,13 +130,13 @@ const AdminDashboard = () => {
             <Text style={{ fontSize: 14, color: '#6B7280' }}>{item.description}</Text>
             <View style={{ flexDirection: 'row', marginTop: 8 }}>
               <TouchableOpacity
-                style={{ marginRight: 8, backgroundColor: '#FB923C', padding: 6, borderRadius: 4 }}
+                style={{ marginRight: 8, backgroundColor: '#FB923C', padding: 10, borderRadius: 4 }}
                 onPress={() => handleEditMenu(item)}
               >
                 <Text style={{ color: '#FFF' }}>Edit</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={{ backgroundColor: '#EF4444', padding: 6, borderRadius: 4 }}
+                style={{ backgroundColor: '#EF4444', padding: 10, borderRadius: 4 }}
                 onPress={() => handleDeleteMenu(item.id)}
               >
                 <Text style={{ color: '#FFF' }}>Delete</Text>
@@ -236,6 +263,7 @@ const AdminDashboard = () => {
       <Modal visible={isOfferModalVisible} animationType="slide">
         <View style={{ flex: 1, justifyContent: 'center', padding: 16, backgroundColor: '#FFF' }}>
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 16 }}>Add Offer</Text>
+
           <Picker
             selectedValue={offerData.menuItemId}
             onValueChange={(itemValue) => setOfferData({ ...offerData, menuItemId: itemValue })}
@@ -243,9 +271,10 @@ const AdminDashboard = () => {
           >
             <Picker.Item label="Select Menu Item" value="" />
             {menuItems.map((item) => (
-              <Picker.Item key={item.id} label={item.name} value={item.id} />
+              <Picker.Item key={item.id} label={`${item.name} - ${item.price}`} value={item.id} />
             ))}
           </Picker>
+
           <TextInput
             placeholder="New Price"
             value={offerData.newPrice}
@@ -253,6 +282,28 @@ const AdminDashboard = () => {
             onChangeText={(text) => setOfferData({ ...offerData, newPrice: text })}
             style={{ borderWidth: 1, borderColor: '#D1D5DB', borderRadius: 8, padding: 10, marginBottom: 8 }}
           />
+
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 }}>
+            <Text style={{ color: '#000000', fontWeight: 'bold' }}>Hours</Text>
+            <Text style={{ color: '#000000', fontWeight: 'bold' }}>Minutes</Text>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 }}>
+            <TextInput
+              placeholder="Hours"
+              value={offerData.validUntilHours}
+              keyboardType="numeric"
+              onChangeText={(text) => setOfferData({ ...offerData, validUntilHours: text })}
+              style={{ borderWidth: 1, borderColor: '#D1D5DB', borderRadius: 8, padding: 10, width: '48%' }}
+            />
+            <TextInput
+              placeholder="Minutes"
+              value={offerData.validUntilMinutes}
+              keyboardType="numeric"
+              onChangeText={(text) => setOfferData({ ...offerData, validUntilMinutes: text })}
+              style={{ borderWidth: 1, borderColor: '#D1D5DB', borderRadius: 8, padding: 10, width: '48%' }}
+            />
+          </View>
+
           <Button title="Add Offer" onPress={handleAddOffer} />
           <Button title="Cancel" color="red" onPress={() => setOfferModalVisible(false)} />
         </View>

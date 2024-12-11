@@ -36,6 +36,9 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "SUPABASE_API_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxanpxeHNzanp3dW5vem55aHJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM5MTg4ODQsImV4cCI6MjA0OTQ5NDg4NH0.fgPtLfhOYNIL-XhVP8z1kQjrIzwLF-T1OSFesxPb7GQ"
     }
   }
 }
