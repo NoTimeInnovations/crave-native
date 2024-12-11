@@ -29,16 +29,6 @@ const RootLayout = () => {
                 }}
             />
             <Tabs.Screen
-                name="cravemart"
-                options={{
-                    title: "cravemart",
-                    tabBarIcon: ({ color, size }) => (
-                        <Icon name="account-outline" color={color} size={size} />
-                    ),
-                    headerShown: false,
-                }}
-            />
-            <Tabs.Screen
                 name="admin"
                 options={{
                     title: "admin",
